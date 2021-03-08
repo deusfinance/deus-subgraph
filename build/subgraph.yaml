@@ -1,0 +1,197 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Vault
+    network: mainnet
+    source:
+      address: "0x1591Da306e9726CF8a60BfF1CE96d7714D7b24cd"
+      abi: Vault
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Locked
+        - OwnershipTransferred
+        - Withdraw
+      abis:
+        - name: Vault
+          file: Vault/abis/Vault.json
+      eventHandlers:
+        - event: Locked(address,uint256,uint256,uint256)
+          handler: handleLocked
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Withdraw(address,uint256,uint256)
+          handler: handleWithdraw
+      file: Vault/Vault.wasm
+  - kind: ethereum/contract
+    name: Vault1
+    network: mainnet
+    source:
+      address: "0xF8bcAF889F60E3d277EA0139e75047a0301D3307"
+      abi: Vault1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Locked
+        - OwnershipTransferred
+        - Withdraw
+      abis:
+        - name: Vault1
+          file: Vault1/abis/Vault1.json
+      eventHandlers:
+        - event: Locked(address,uint256,uint256,uint256)
+          handler: handleLocked
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Withdraw(address,uint256,uint256)
+          handler: handleWithdraw
+      file: Vault/Vault.wasm
+  - kind: ethereum/contract
+    name: DeaDeusVault
+    network: mainnet
+    source:
+      address: "0x92adab6d8dc13dbd9052b291cfc1d07888299d65"
+      abi: DeaDeusVault
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+      abis:
+        - name: DeaDeusVault
+          file: DeaDeusVault/abis/DeaDeusVault.json
+      eventHandlers:
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap
+      file: DeaDeusVault/DeaDeusVault.wasm
+  - kind: ethereum/contract
+    name: SDeaStaking
+    network: mainnet
+    source:
+      address: "0xFd82cdf5A0212A5C838D7A69f43Ceb4A624ad7eF"
+      abi: SDeaStaking
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Deposit
+        - Withdraw
+        - EmergencyWithdraw
+        - RewardClaimed
+        - RewardPerBlockChanged
+      abis:
+        - name: SDeaStaking
+          file: SDeaStaking/abis/SDeaStaking.json
+      eventHandlers:
+        - event: Deposit(address,uint256)
+          handler: handleSDeaDeposit
+        - event: Withdraw(address,uint256)
+          handler: handleSDeaWithdraw
+        - event: EmergencyWithdraw(address,uint256)
+          handler: handleSDeaEmergencyWithdraw
+        - event: RewardClaimed(address,uint256)
+          handler: handleSDeaRewardClaimed
+        - event: RewardPerBlockChanged(uint256,uint256)
+          handler: handleSDeaRewardPerBlockChanged
+      file: SDeaStaking/SDeaStaking.wasm
+  - kind: ethereum/contract
+    name: SDeusStaking
+    network: mainnet
+    source:
+      address: "0x417d16BF319B7F413E950e131D0335004536A37E"
+      abi: SDeusStaking
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Deposit
+        - Withdraw
+        - EmergencyWithdraw
+        - RewardClaimed
+        - RewardPerBlockChanged
+      abis:
+        - name: SDeusStaking
+          file: SDeusStaking/abis/SDeusStaking.json
+      eventHandlers:
+        - event: Deposit(address,uint256)
+          handler: handleSDeusDeposit
+        - event: Withdraw(address,uint256)
+          handler: handleSDeusWithdraw
+        - event: EmergencyWithdraw(address,uint256)
+          handler: handleSDeusEmergencyWithdraw
+        - event: RewardClaimed(address,uint256)
+          handler: handleSDeusRewardClaimed
+        - event: RewardPerBlockChanged(uint256,uint256)
+          handler: handleSDeusRewardPerBlockChanged
+      file: SDeaStaking/SDeaStaking.wasm
+  - kind: ethereum/contract
+    name: TimeStaking
+    network: mainnet
+    source:
+      address: "0x982C54303622347fB3724Ee757cCF6ACc553A5f8"
+      abi: TimeStaking
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Deposit
+        - Withdraw
+        - EmergencyWithdraw
+        - RewardClaimed
+        - RewardPerBlockChanged
+      abis:
+        - name: TimeStaking
+          file: TimeStaking/abis/TimeStaking.json
+      eventHandlers:
+        - event: Deposit(address,uint256)
+          handler: handleTimeDeposit
+        - event: Withdraw(address,uint256)
+          handler: handleTimeWithdraw
+        - event: EmergencyWithdraw(address,uint256)
+          handler: handleTimeEmergencyWithdraw
+        - event: RewardClaimed(address,uint256)
+          handler: handleTimeRewardClaimed
+        - event: RewardPerBlockChanged(uint256,uint256)
+          handler: handleTimeRewardPerBlockChanged
+      file: SDeaStaking/SDeaStaking.wasm
+  - kind: ethereum/contract
+    name: BalancerStaking
+    network: mainnet
+    source:
+      address: "0x136193485A8f4870f31B864429a72A9037a1fCE2"
+      abi: BalancerStaking
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Deposit
+        - Withdraw
+        - EmergencyWithdraw
+        - RewardClaimed
+        - RewardPerBlockChanged
+      abis:
+        - name: BalancerStaking
+          file: BalancerStaking/abis/BalancerStaking.json
+      eventHandlers:
+        - event: Deposit(address,uint256)
+          handler: handleBalancerDeposit
+        - event: Withdraw(address,uint256)
+          handler: handleBalancerWithdraw
+        - event: EmergencyWithdraw(address,uint256)
+          handler: handleBalancerEmergencyWithdraw
+        - event: RewardClaimed(address,uint256)
+          handler: handleBalancerRewardClaimed
+        - event: RewardPerBlockChanged(uint256,uint256)
+          handler: handleBalancerRewardPerBlockChanged
+      file: SDeaStaking/SDeaStaking.wasm

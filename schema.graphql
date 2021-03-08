@@ -1,0 +1,34 @@
+type VaultEntity @entity {
+  id: ID!
+  count: BigInt!
+  user: Bytes! # address
+  lockedAmount: BigInt! # uint256
+  sealedAmount: BigInt! # uint256
+  timeAmount: BigInt! # uint256
+}
+
+type LPEntity @entity {
+  id: ID!
+  name: String!
+  amount0In: BigInt!
+  amount1In: BigInt!
+  amount0Out: BigInt!
+  amount1Out: BigInt!
+  from: Bytes!
+  to: Bytes!
+}
+
+type StakingEntity @entity {
+  id: ID!
+  address: Bytes!
+  amount: BigInt!
+  type: String!
+  name: String!
+}
+
+type StakingRewardPerBlockEntity @entity {
+  id: ID!
+  oldValue: BigInt!
+  newValue: BigInt!
+  name: String!
+}
