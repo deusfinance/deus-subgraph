@@ -312,3 +312,82 @@ export class StakingRewardPerBlockEntity extends Entity {
     this.set("name", Value.fromString(value));
   }
 }
+
+export class StakingSummaryEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id !== null,
+      "Cannot save StakingSummaryEntity entity without an ID"
+    );
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save StakingSummaryEntity entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("StakingSummaryEntity", id.toString(), this);
+  }
+
+  static load(id: string): StakingSummaryEntity | null {
+    return store.get("StakingSummaryEntity", id) as StakingSummaryEntity | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get totalValueLocked(): BigInt {
+    let value = this.get("totalValueLocked");
+    return value.toBigInt();
+  }
+
+  set totalValueLocked(value: BigInt) {
+    this.set("totalValueLocked", Value.fromBigInt(value));
+  }
+
+  get balancerLocked(): BigInt {
+    let value = this.get("balancerLocked");
+    return value.toBigInt();
+  }
+
+  set balancerLocked(value: BigInt) {
+    this.set("balancerLocked", Value.fromBigInt(value));
+  }
+
+  get sDeaLocked(): BigInt {
+    let value = this.get("sDeaLocked");
+    return value.toBigInt();
+  }
+
+  set sDeaLocked(value: BigInt) {
+    this.set("sDeaLocked", Value.fromBigInt(value));
+  }
+
+  get sDeusLocked(): BigInt {
+    let value = this.get("sDeusLocked");
+    return value.toBigInt();
+  }
+
+  set sDeusLocked(value: BigInt) {
+    this.set("sDeusLocked", Value.fromBigInt(value));
+  }
+
+  get timeLocked(): BigInt {
+    let value = this.get("timeLocked");
+    return value.toBigInt();
+  }
+
+  set timeLocked(value: BigInt) {
+    this.set("timeLocked", Value.fromBigInt(value));
+  }
+}

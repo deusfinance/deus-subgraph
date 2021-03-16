@@ -32,3 +32,12 @@ type StakingRewardPerBlockEntity @entity {
   newValue: BigInt!
   name: String!
 }
+
+type StakingSummaryEntity @entity {
+  id: ID!
+  totalValueLocked: BigInt!
+  balancerLocked: BigInt!
+  sDeaLocked: BigInt!
+  sDeusLocked: BigInt!
+  timeLocked: BigInt!
+}

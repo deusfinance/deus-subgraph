@@ -6,7 +6,56 @@ import {
   EmergencyWithdraw,
   RewardPerBlockChanged
 } from "../generated/SDeaStaking/SDeaStaking"
-import { StakingEntity, StakingRewardPerBlockEntity } from "../generated/schema"
+import { StakingEntity, StakingRewardPerBlockEntity, StakingSummaryEntity } from "../generated/schema"
+
+function updateSummaryEntity(amount: BigInt, name: String, type: String): void {
+  let summary = StakingSummaryEntity.load('0');
+
+  if (summary === null) {
+    summary = new StakingSummaryEntity('0');
+    summary.totalValueLocked = BigInt.fromI32(0);
+    summary.sDeaLocked = BigInt.fromI32(0);
+    summary.sDeusLocked = BigInt.fromI32(0);
+    summary.timeLocked = BigInt.fromI32(0);
+    summary.balancerLocked = BigInt.fromI32(0);
+    summary.save();
+  }
+  if (type === 'plus') {
+    summary.totalValueLocked = summary.totalValueLocked.plus(amount)
+  } else {
+    summary.totalValueLocked = summary.totalValueLocked.minus(amount)
+  }
+
+  if (name === 'sDea') {
+    if (type === 'plus') {
+      summary.sDeaLocked = summary.sDeaLocked.plus(amount)
+    } else {
+      summary.sDeaLocked = summary.sDeaLocked.minus(amount)
+    }
+  }
+  if (name === 'sDeus') {
+    if (type === 'plus') {
+      summary.sDeusLocked = summary.sDeusLocked.plus(amount)
+    } else {
+      summary.sDeusLocked = summary.sDeusLocked.minus(amount)
+    }
+  }
+  if (name === 'Time') {
+    if (type === 'plus') {
+      summary.timeLocked = summary.timeLocked.plus(amount)
+    } else {
+      summary.timeLocked = summary.timeLocked.minus(amount)
+    }
+  }
+  if (name === 'Balancer') {
+    if (type === 'plus') {
+      summary.balancerLocked = summary.balancerLocked.plus(amount)
+    } else {
+      summary.balancerLocked = summary.balancerLocked.minus(amount)
+    }
+  }
+  summary.save();
+}
 
 // SDea part
 export function handleSDeaDeposit(event: Deposit): void {
@@ -19,6 +68,7 @@ export function handleSDeaDeposit(event: Deposit): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'sDea', 'plus');
 }
 
 export function handleSDeaWithdraw(event: Withdraw): void {
@@ -31,6 +81,7 @@ export function handleSDeaWithdraw(event: Withdraw): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'sDea', 'minus');
 }
 
 export function handleSDeaEmergencyWithdraw(event: EmergencyWithdraw): void {
@@ -43,6 +94,7 @@ export function handleSDeaEmergencyWithdraw(event: EmergencyWithdraw): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'sDea', 'minus');
 }
 
 export function handleSDeaRewardClaimed(event: RewardClaimed): void {
@@ -55,6 +107,7 @@ export function handleSDeaRewardClaimed(event: RewardClaimed): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'sDea', 'minus');
 }
 
 export function handleSDeaRewardPerBlockChanged(event: RewardPerBlockChanged): void {
@@ -79,6 +132,7 @@ export function handleSDeusDeposit(event: Deposit): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'sDeus', 'plus');
 }
 
 export function handleSDeusWithdraw(event: Withdraw): void {
@@ -91,6 +145,7 @@ export function handleSDeusWithdraw(event: Withdraw): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'sDeus', 'minus');
 }
 
 export function handleSDeusEmergencyWithdraw(event: EmergencyWithdraw): void {
@@ -103,6 +158,7 @@ export function handleSDeusEmergencyWithdraw(event: EmergencyWithdraw): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'sDeus', 'minus');
 }
 
 export function handleSDeusRewardClaimed(event: RewardClaimed): void {
@@ -115,6 +171,7 @@ export function handleSDeusRewardClaimed(event: RewardClaimed): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'sDeus', 'minus');
 }
 
 export function handleSDeusRewardPerBlockChanged(event: RewardPerBlockChanged): void {
@@ -139,6 +196,7 @@ export function handleTimeDeposit(event: Deposit): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'Time', 'plus');
 }
 
 export function handleTimeWithdraw(event: Withdraw): void {
@@ -151,6 +209,7 @@ export function handleTimeWithdraw(event: Withdraw): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'Time', 'minus');
 }
 
 export function handleTimeEmergencyWithdraw(event: EmergencyWithdraw): void {
@@ -163,6 +222,7 @@ export function handleTimeEmergencyWithdraw(event: EmergencyWithdraw): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'Time', 'minus');
 }
 
 export function handleTimeRewardClaimed(event: RewardClaimed): void {
@@ -175,6 +235,7 @@ export function handleTimeRewardClaimed(event: RewardClaimed): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'Time', 'minus');
 }
 
 export function handleTimeRewardPerBlockChanged(event: RewardPerBlockChanged): void {
@@ -199,6 +260,7 @@ export function handleBalancerDeposit(event: Deposit): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'Balancer', 'plus');
 }
 
 export function handleBalancerWithdraw(event: Withdraw): void {
@@ -211,6 +273,7 @@ export function handleBalancerWithdraw(event: Withdraw): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'Balancer', 'minus');
 }
 
 export function handleBalancerEmergencyWithdraw(event: EmergencyWithdraw): void {
@@ -223,6 +286,7 @@ export function handleBalancerEmergencyWithdraw(event: EmergencyWithdraw): void 
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'Balancer', 'minus');
 }
 
 export function handleBalancerRewardClaimed(event: RewardClaimed): void {
@@ -235,6 +299,7 @@ export function handleBalancerRewardClaimed(event: RewardClaimed): void {
   entity.address = event.params.user;
   entity.amount = event.params.amount;
   entity.save()
+  updateSummaryEntity(event.params.amount, 'Balancer', 'minus');
 }
 
 export function handleBalancerRewardPerBlockChanged(event: RewardPerBlockChanged): void {
