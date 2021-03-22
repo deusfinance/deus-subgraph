@@ -4,7 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ deusfinance/deus-subgraph",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ droplet361/deus-finance-subgraph",
     "create-local": "graph create --node http://localhost:8020/ deusfinance/deus-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ deusfinance/deus-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 deusfinance/deus-subgraph"

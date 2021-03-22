@@ -18,7 +18,7 @@ dataSources:
         - Withdraw
       abis:
         - name: Vault
-          file: Vault/abis/Vault.json
+          file: Vault\abis\Vault.json
       eventHandlers:
         - event: Locked(address,uint256,uint256,uint256)
           handler: handleLocked
@@ -26,7 +26,7 @@ dataSources:
           handler: handleOwnershipTransferred
         - event: Withdraw(address,uint256,uint256)
           handler: handleWithdraw
-      file: Vault/Vault.wasm
+      file: Vault\Vault.wasm
   - kind: ethereum/contract
     name: Vault1
     network: mainnet
@@ -43,7 +43,7 @@ dataSources:
         - Withdraw
       abis:
         - name: Vault1
-          file: Vault1/abis/Vault1.json
+          file: Vault1\abis\Vault1.json
       eventHandlers:
         - event: Locked(address,uint256,uint256,uint256)
           handler: handleLocked
@@ -51,7 +51,7 @@ dataSources:
           handler: handleOwnershipTransferred
         - event: Withdraw(address,uint256,uint256)
           handler: handleWithdraw
-      file: Vault/Vault.wasm
+      file: Vault\Vault.wasm
   - kind: ethereum/contract
     name: DeaDeusVault
     network: mainnet
@@ -66,11 +66,11 @@ dataSources:
         - Swap
       abis:
         - name: DeaDeusVault
-          file: DeaDeusVault/abis/DeaDeusVault.json
+          file: DeaDeusVault\abis\DeaDeusVault.json
       eventHandlers:
         - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
           handler: handleSwap
-      file: DeaDeusVault/DeaDeusVault.wasm
+      file: DeaDeusVault\DeaDeusVault.wasm
   - kind: ethereum/contract
     name: SDeaStaking
     network: mainnet
@@ -89,7 +89,7 @@ dataSources:
         - RewardPerBlockChanged
       abis:
         - name: SDeaStaking
-          file: SDeaStaking/abis/SDeaStaking.json
+          file: SDeaStaking\abis\SDeaStaking.json
       eventHandlers:
         - event: Deposit(address,uint256)
           handler: handleSDeaDeposit
@@ -101,7 +101,7 @@ dataSources:
           handler: handleSDeaRewardClaimed
         - event: RewardPerBlockChanged(uint256,uint256)
           handler: handleSDeaRewardPerBlockChanged
-      file: SDeaStaking/SDeaStaking.wasm
+      file: SDeaStaking\SDeaStaking.wasm
   - kind: ethereum/contract
     name: SDeusStaking
     network: mainnet
@@ -120,7 +120,7 @@ dataSources:
         - RewardPerBlockChanged
       abis:
         - name: SDeusStaking
-          file: SDeusStaking/abis/SDeusStaking.json
+          file: SDeusStaking\abis\SDeusStaking.json
       eventHandlers:
         - event: Deposit(address,uint256)
           handler: handleSDeusDeposit
@@ -132,7 +132,7 @@ dataSources:
           handler: handleSDeusRewardClaimed
         - event: RewardPerBlockChanged(uint256,uint256)
           handler: handleSDeusRewardPerBlockChanged
-      file: SDeaStaking/SDeaStaking.wasm
+      file: SDeaStaking\SDeaStaking.wasm
   - kind: ethereum/contract
     name: TimeStaking
     network: mainnet
@@ -151,7 +151,7 @@ dataSources:
         - RewardPerBlockChanged
       abis:
         - name: TimeStaking
-          file: TimeStaking/abis/TimeStaking.json
+          file: TimeStaking\abis\TimeStaking.json
       eventHandlers:
         - event: Deposit(address,uint256)
           handler: handleTimeDeposit
@@ -163,7 +163,7 @@ dataSources:
           handler: handleTimeRewardClaimed
         - event: RewardPerBlockChanged(uint256,uint256)
           handler: handleTimeRewardPerBlockChanged
-      file: SDeaStaking/SDeaStaking.wasm
+      file: SDeaStaking\SDeaStaking.wasm
   - kind: ethereum/contract
     name: BalancerStaking
     network: mainnet
@@ -182,7 +182,7 @@ dataSources:
         - RewardPerBlockChanged
       abis:
         - name: BalancerStaking
-          file: BalancerStaking/abis/BalancerStaking.json
+          file: BalancerStaking\abis\BalancerStaking.json
       eventHandlers:
         - event: Deposit(address,uint256)
           handler: handleBalancerDeposit
@@ -194,4 +194,4 @@ dataSources:
           handler: handleBalancerRewardClaimed
         - event: RewardPerBlockChanged(uint256,uint256)
           handler: handleBalancerRewardPerBlockChanged
-      file: SDeaStaking/SDeaStaking.wasm
+      file: SDeaStaking\SDeaStaking.wasm
