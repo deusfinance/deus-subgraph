@@ -26,11 +26,19 @@ type StakingEntity @entity {
   name: String!
 }
 
+type StakingRewardClaimedEntity @entity {
+  id: ID!
+  totalRewardClaimed: BigInt!
+  balancerRewardClaimed: BigInt!
+  sDeaRewardClaimed: BigInt!
+  sDeusRewardClaimed: BigInt!
+  timeRewardClaimed: BigInt!
+}
+
 type StakingRewardPerBlockEntity @entity {
   id: ID!
   oldValue: BigInt!
   newValue: BigInt!
-  name: String!
 }
 
 type StakingSummaryEntity @entity {

@@ -6,7 +6,7 @@ import {
   EmergencyWithdraw,
   RewardPerBlockChanged
 } from "../generated/SDeaStaking/SDeaStaking"
-import { StakingEntity, StakingRewardPerBlockEntity, StakingSummaryEntity } from "../generated/schema"
+import { StakingEntity, StakingRewardClaimedEntity, StakingRewardPerBlockEntity, StakingSummaryEntity } from "../generated/schema"
 
 function updateStakingSummaryEntity(id: string, amount: BigInt, name: String, type: String): void {
   let summary = StakingSummaryEntity.load(id);
@@ -62,6 +62,40 @@ function updateSummaryEntity(id: Address, amount: BigInt, name: String, type: St
   updateStakingSummaryEntity(id.toHex(), amount, name, type)
 }
 
+function updateRewardClaimedEntity(id: string, amount: BigInt, name: String): void {
+  let summary = StakingRewardClaimedEntity.load(id);
+
+  if (summary === null) {
+    summary = new StakingRewardClaimedEntity(id);
+    summary.totalRewardClaimed = BigInt.fromI32(0);
+    summary.balancerRewardClaimed = BigInt.fromI32(0);
+    summary.sDeaRewardClaimed = BigInt.fromI32(0);
+    summary.sDeusRewardClaimed = BigInt.fromI32(0);
+    summary.timeRewardClaimed = BigInt.fromI32(0);
+    summary.save();
+  }
+    
+  summary.totalRewardClaimed = summary.totalRewardClaimed.plus(amount)
+  if (name === 'Balancer') {
+    summary.balancerRewardClaimed = summary.balancerRewardClaimed.plus(amount)
+  }
+  if (name === 'sDea') {
+    summary.sDeaRewardClaimed = summary.sDeaRewardClaimed.plus(amount)
+  }
+  if (name === 'sDeus') {
+    summary.sDeusRewardClaimed = summary.sDeusRewardClaimed.plus(amount)
+  }
+  if (name === 'Time') {
+    summary.timeRewardClaimed = summary.timeRewardClaimed.plus(amount)
+  }
+  summary.save();
+}
+
+function updateRewardClaimed(id: Address, amount: BigInt, name: String): void {
+  updateRewardClaimedEntity('0', amount, name)
+  updateRewardClaimedEntity(id.toHex(), amount, name)
+}
+
 // SDea part
 export function handleSDeaDeposit(event: Deposit): void {
   let entity = StakingEntity.load(event.transaction.hash.toHex())
@@ -103,24 +137,14 @@ export function handleSDeaEmergencyWithdraw(event: EmergencyWithdraw): void {
 }
 
 export function handleSDeaRewardClaimed(event: RewardClaimed): void {
-  let entity = StakingEntity.load(event.transaction.hash.toHex())
-  if (entity == null) {
-    entity = new StakingEntity(event.transaction.hash.toHex())
-  }
-  entity.name = 'sDea';
-  entity.type = 'RewardClaimed';
-  entity.address = event.params.user;
-  entity.amount = event.params.amount;
-  entity.save()
-  updateSummaryEntity(event.params.user, event.params.amount, 'sDea', 'minus');
+  updateRewardClaimed(event.params.user, event.params.amount, 'sDea');
 }
 
 export function handleSDeaRewardPerBlockChanged(event: RewardPerBlockChanged): void {
-  let entity = StakingRewardPerBlockEntity.load(event.transaction.hash.toHex())
+  let entity = StakingRewardPerBlockEntity.load('sDea')
   if (entity == null) {
-    entity = new StakingRewardPerBlockEntity(event.transaction.hash.toHex())
+    entity = new StakingRewardPerBlockEntity('sDea')
   }
-  entity.name = 'sDea';
   entity.oldValue = event.params.oldValue;
   entity.newValue = event.params.newValue;
   entity.save()
@@ -167,24 +191,14 @@ export function handleSDeusEmergencyWithdraw(event: EmergencyWithdraw): void {
 }
 
 export function handleSDeusRewardClaimed(event: RewardClaimed): void {
-  let entity = StakingEntity.load(event.transaction.hash.toHex())
-  if (entity == null) {
-    entity = new StakingEntity(event.transaction.hash.toHex())
-  }
-  entity.name = 'sDeus';
-  entity.type = 'RewardClaimed';
-  entity.address = event.params.user;
-  entity.amount = event.params.amount;
-  entity.save()
-  updateSummaryEntity(event.params.user, event.params.amount, 'sDeus', 'minus');
+  updateRewardClaimed(event.params.user, event.params.amount, 'sDeus');
 }
 
 export function handleSDeusRewardPerBlockChanged(event: RewardPerBlockChanged): void {
-  let entity = StakingRewardPerBlockEntity.load(event.transaction.hash.toHex())
+  let entity = StakingRewardPerBlockEntity.load('sDeus')
   if (entity == null) {
-    entity = new StakingRewardPerBlockEntity(event.transaction.hash.toHex())
+    entity = new StakingRewardPerBlockEntity('sDeus')
   }
-  entity.name = 'sDeus';
   entity.oldValue = event.params.oldValue;
   entity.newValue = event.params.newValue;
   entity.save()
@@ -231,24 +245,14 @@ export function handleTimeEmergencyWithdraw(event: EmergencyWithdraw): void {
 }
 
 export function handleTimeRewardClaimed(event: RewardClaimed): void {
-  let entity = StakingEntity.load(event.transaction.hash.toHex())
-  if (entity == null) {
-    entity = new StakingEntity(event.transaction.hash.toHex())
-  }
-  entity.name = 'Time';
-  entity.type = 'RewardClaimed';
-  entity.address = event.params.user;
-  entity.amount = event.params.amount;
-  entity.save()
-  updateSummaryEntity(event.params.user, event.params.amount, 'Time', 'minus');
+  updateRewardClaimed(event.params.user, event.params.amount, 'Time');
 }
 
 export function handleTimeRewardPerBlockChanged(event: RewardPerBlockChanged): void {
-  let entity = StakingRewardPerBlockEntity.load(event.transaction.hash.toHex())
+  let entity = StakingRewardPerBlockEntity.load('Time')
   if (entity == null) {
-    entity = new StakingRewardPerBlockEntity(event.transaction.hash.toHex())
+    entity = new StakingRewardPerBlockEntity('Time')
   }
-  entity.name = 'Time';
   entity.oldValue = event.params.oldValue;
   entity.newValue = event.params.newValue;
   entity.save()
@@ -295,24 +299,14 @@ export function handleBalancerEmergencyWithdraw(event: EmergencyWithdraw): void 
 }
 
 export function handleBalancerRewardClaimed(event: RewardClaimed): void {
-  let entity = StakingEntity.load(event.transaction.hash.toHex())
-  if (entity == null) {
-    entity = new StakingEntity(event.transaction.hash.toHex())
-  }
-  entity.name = 'Balancer';
-  entity.type = 'RewardClaimed';
-  entity.address = event.params.user;
-  entity.amount = event.params.amount;
-  entity.save()
-  updateSummaryEntity(event.params.user, event.params.amount, 'Balancer', 'minus');
+  updateRewardClaimed(event.params.user, event.params.amount, 'Balancer');
 }
 
 export function handleBalancerRewardPerBlockChanged(event: RewardPerBlockChanged): void {
-  let entity = StakingRewardPerBlockEntity.load(event.transaction.hash.toHex())
+  let entity = StakingRewardPerBlockEntity.load('Balancer')
   if (entity == null) {
-    entity = new StakingRewardPerBlockEntity(event.transaction.hash.toHex())
+    entity = new StakingRewardPerBlockEntity('Balancer')
   }
-  entity.name = 'Balancer';
   entity.oldValue = event.params.oldValue;
   entity.newValue = event.params.newValue;
   entity.save()

@@ -249,6 +249,88 @@ export class StakingEntity extends Entity {
   }
 }
 
+export class StakingRewardClaimedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id !== null,
+      "Cannot save StakingRewardClaimedEntity entity without an ID"
+    );
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save StakingRewardClaimedEntity entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("StakingRewardClaimedEntity", id.toString(), this);
+  }
+
+  static load(id: string): StakingRewardClaimedEntity | null {
+    return store.get(
+      "StakingRewardClaimedEntity",
+      id
+    ) as StakingRewardClaimedEntity | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get totalRewardClaimed(): BigInt {
+    let value = this.get("totalRewardClaimed");
+    return value.toBigInt();
+  }
+
+  set totalRewardClaimed(value: BigInt) {
+    this.set("totalRewardClaimed", Value.fromBigInt(value));
+  }
+
+  get balancerRewardClaimed(): BigInt {
+    let value = this.get("balancerRewardClaimed");
+    return value.toBigInt();
+  }
+
+  set balancerRewardClaimed(value: BigInt) {
+    this.set("balancerRewardClaimed", Value.fromBigInt(value));
+  }
+
+  get sDeaRewardClaimed(): BigInt {
+    let value = this.get("sDeaRewardClaimed");
+    return value.toBigInt();
+  }
+
+  set sDeaRewardClaimed(value: BigInt) {
+    this.set("sDeaRewardClaimed", Value.fromBigInt(value));
+  }
+
+  get sDeusRewardClaimed(): BigInt {
+    let value = this.get("sDeusRewardClaimed");
+    return value.toBigInt();
+  }
+
+  set sDeusRewardClaimed(value: BigInt) {
+    this.set("sDeusRewardClaimed", Value.fromBigInt(value));
+  }
+
+  get timeRewardClaimed(): BigInt {
+    let value = this.get("timeRewardClaimed");
+    return value.toBigInt();
+  }
+
+  set timeRewardClaimed(value: BigInt) {
+    this.set("timeRewardClaimed", Value.fromBigInt(value));
+  }
+}
+
 export class StakingRewardPerBlockEntity extends Entity {
   constructor(id: string) {
     super();
@@ -301,15 +383,6 @@ export class StakingRewardPerBlockEntity extends Entity {
 
   set newValue(value: BigInt) {
     this.set("newValue", Value.fromBigInt(value));
-  }
-
-  get name(): string {
-    let value = this.get("name");
-    return value.toString();
-  }
-
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
   }
 }
 
